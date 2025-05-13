@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Book list{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+    }
+</style>
+<div class="container mt-4">
+    <h2 class="mb-4 text-body-tertiary">Book Collection</h2>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for book in books %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm bg-body-tertiary">
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="badge bg-primary me-2">{{ forloop.counter }}</span>
+                        <h5 class="card-title mb-0 text-dark">{{ book.title }}</h5>
+                    </div>
+                    <p class="text-muted">by {{ book.author }}</p>
+                    <div class="mt-auto">
+                        <a href="{% url 'BookDetail_view' book.slug %}" 
+                           class="btn btn-sm btn-primary stretched-link">
+                            View Details <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

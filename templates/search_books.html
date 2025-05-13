@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<style>
+    .search-btn button{
+     
+            color: rgb(219, 255, 229); font-size: 13px; line-height: 13px; padding: 14px; border-radius: 8px; font-family: Georgia, serif; font-weight: normal; text-decoration: none; font-style: normal; font-variant: normal; text-transform: none; background-image: linear-gradient(to right, rgb(113, 72, 164) 0%, rgb(127, 26, 203) 60%, rgb(117, 71, 55) 100%); box-shadow: rgb(0, 0, 0) 5px 5px 15px 5px; border: 2px solid rgb(28, 110, 164); display: inline-block;}
+            .myButton:hover {
+            background: #7148A4; }
+            .myButton:active {
+            background: #754737; }
+
+
+        
+            
+</style>
+<div class="container mt-4">
+    <h1>Search Results</h1>
+    <form method="get" action="{% url 'search' %}">
+        <input type="text" name="query" placeholder="Search..." value="{{ query }}" class="form-control text-dark bg-info-subtle mb-3 text-primary">
+        <div class="search-btn">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+    </form>
+
+    {% if result %}
+        <ul class="list-group">
+            {% for book in result %}
+            <div class="col-md-3">
+                <div class="product-item">
+                    <figure class="product-style">
+                        <a href="{% url 'BookDetail_view' book.slug %}">
+                            <img src="{{ book.image.url }}" alt="Books" class="product-item img-fluid rounded-5  ">
+                            <button type="button " class="add-to-cart btn btn-black"   data-product-tile="add-to-cart">Read More</button>
+                        </a>
+                    </figure>
+                    <figcaption class='bg-light rounded-3 p-1'>
+                        <a href="{% url "BookDetail_view" book.slug %}">
+                        <h3 >{{ book.title }}</h3>
+                        <span>{{ book.author }}</span><br></a>
+             
+                        {% comment %} <div class="item-price"><s class='text-black'></s> <b class="">Free</b></div> {% endcomment %}
+                    </figcaption>
+                </div>
+            </div>
+                
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found for "{{ query }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

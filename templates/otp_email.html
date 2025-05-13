@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+<body style="font-family: Arial, sans-serif; background-color: #f0f8ff; color: #333;">
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
+        {% comment %} <div style="text-align: center;">
+            <img src="{% static "images/MyBookLab.png" %}" alt="Website Logo" style="max-width: 100px; margin-bottom: 20px;">
+        </div> {% endcomment %}
+        <h1 style="text-align: center; color: #4CAF50;">OTP Verification</h1>
+        <p style="font-size: 18px; line-height: 1.6;">Hello, {{ username }},</p>
+        <p style="font-size: 18px; line-height: 1.6;">Your OTP verification code is:</p>
+        <p style="font-size: 24px; font-weight: bold; color: #FF5722; text-align: center; padding: 10px; background-color: #e0f7fa; border-radius: 5px;">{{ otp }}</p>
+        <p style="font-size: 16px; line-height: 1.6;">Please use the above code to complete your verification process.</p>
+        <p style="font-size: 16px; line-height: 1.6;">Warm Regards,<br>Sukhchain Singh</p>
+        <p style="font-size: 14px; color: #888; text-align: center;">This OTP will expire in 10 minutes.</p>
+    </div>
+</body>
+</html>

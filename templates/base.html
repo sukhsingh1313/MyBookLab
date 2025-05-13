@@ -1,0 +1,292 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" 
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vendor.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'icomoon/icomoon.css' %}">
+    <style>
+        /* Existing styles */
+        .rounded-logo {
+            border-radius: 50%;
+            width: 100px;
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .search-box {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 200px;
+            z-index: 10;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 5px;
+        }
+        
+        .body-custom {
+            background-color: rgb(164, 75, 253);
+            color: rgb(7, 3, 15);
+        }
+        
+        .custom-header {
+            background-color: rgb(164, 75, 253);
+        }
+        
+        .navbar {
+            color: black;
+        }
+       
+        
+        /* Media Query for screens 650px or less */
+        @media (max-width: 675px) {
+            .main-logo {
+                text-align: center;
+                width: 100%; /* Make logo container full width */
+            }
+            .col-md-2 {
+                order: 1; /* Ensure logo is at the top */
+            }
+            .col-md-10 {
+                order: 2; /* Ensure navbar is below the logo */
+            }
+            .navbar {
+                justify-content: center;
+            }
+        }
+        
+        .nav-link{
+            color: rgb(61, 31, 4);
+        }
+        .nav-link:hover {
+            color: rgb(0,0,0); /* Hover text color */
+            
+          }
+          .custom-link{
+            background-color:  rgb(222, 218, 215);
+           
+          }
+          .social-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    
+        .social-links ul li {
+            display: inline-block; /* Horizontal alignment */
+        }
+    
+        .social-links ul li a {
+            color: gray;
+            text-decoration: none;
+            font-size: 20px;
+        }
+    
+        .social-links ul li a:hover {
+            color: #ff5733; /* Hover effect color */
+        }
+        .navbar-nav-custom li a{
+            font-size: 15px;
+        }
+        .navbar-nav-custom li a:hover{
+            color:rgb(0, 143, 112);
+            font-size: 17px;
+        }
+    
+    </style>
+</head>
+
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0" class = "body-custom">
+    
+
+    <div id="header-wrap" class="custom-header">
+        <div class="top-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="social-links">
+                            <ul class="d-flex align-items-center justify-content-start ">
+                                {% for link in social_link %}
+                                <li class="p-1  custom-link rounded-4 me-1">
+                                    <a href="{{ link.link }}" target="_blank">
+                                        <i class="fa fa-{{ link.name|lower }}"></i>
+                                    </a>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="right-element">
+                            <div class="action-menu">
+                                <div class="search-bar">
+                                    <a href="{% url 'search' %}" class="search-button search-toggle" onclick="toggleSearchBar()">
+                                        <i class="icon icon-search"></i>
+                                    </a>
+                                    {% comment %} <form role="search" method="get" action="{% url 'search' %}" class="search-box">
+                                        <input class="search-field text search-input" name="query" placeholder="Search" type="search">
+                                        <button type="submit" class="btn btn-primary d-none">Search</button>
+                                    </form> {% endcomment %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+
+        <header id="header" class=""  style="background-color:rgb(164, 75, 253);">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="main-logo  w-100 mb-2">
+                            {% if bar_name_changes.logo %}
+                                <img src="{{ bar_name_changes.logo.url }}" alt="logo" class="rounded-logo">
+                            {% else %}
+                                <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="rounded-logo" style="">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <nav id="navbar" class="navbar navbar-expand-lg navbar-light  rounded-5 m-1" style="background-color:rgb(234, 220, 250); color:black; ">
+                            <div class="container-fluid">
+                                {% if bar_name_changes.menu_name %}
+                                    <a class="navbar-brand" href="/">{{bar_name_changes.menu_name}}</a>
+                                {% else %}
+                                    <a class="navbar-brand " href="/">MyBazaar</a>
+                                {% endif %}
+                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                                        aria-label="Toggle navigation">
+                                    <span class="navbar-toggler-icon"></span>
+                                </button>
+                                <div class="collapse navbar-collapse" id="navbarNav">
+                                    <ul class="navbar-nav ms-auto navbar-nav-custom">
+                                        <li class="nav-item"><a class="nav-link active"  href="/">Home</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url "contect_view" %}">Contact</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url "book_list" %}">Book List</a></li>
+                                        
+        {% if request.user.is_authenticated %}
+        <!-- Logout option for logged-in users -->
+        <li class="nav-item">
+            <a class="nav-link link-danger" href="{% url 'logout_view' %}">Logout</a>
+        </li>
+    {% else %}
+        <!-- Signup and Login options for guests -->
+        <li class="nav-item">
+            <a class="nav-link link-info" href="{% url 'signup_view' %}">Signup</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link link-primary fw-bold" href="{% url 'login_view' %}">Login</a>
+        </li>
+    {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    {% block content %}{% endblock %}
+
+    <footer id="footer" class="d-flex justify-content-center align-items-center text-center py-4">
+        
+            <div class="row justify-content-center">
+                <div class="col-md-15">
+                   
+                       
+                            {% if bar_name_changes.logo %}
+                                <img src="{{ bar_name_changes.logo }}" alt="logo" class="rounded-logo mb-3">
+                            {% else %}
+                                <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="footer-logo rounded-logo mb-3">
+                            {% endif %}
+                            <div class='d-flex justify-content-center'>
+                                <p>What is the point of being a developer if I can't make a difference?</p>
+                            </div>
+                        
+                      
+                   
+                </div>
+            </div>
+      
+    </footer>
+    
+
+    <div id="footer-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-md-8 ">
+                                <p>© 2025 All rights reserved. Developed by <a href="https:///codexsukh.onrender.com" target="_blank" class='link-secondary'>Sukhchain singh 👈</a><small>click and see portfolio</small></p>
+                            </div>
+                            <div class="col-md-4">
+                                {% for link in social_link %}
+                                    <div class="social-links align-right">
+                                        <ul>
+                                            <li class='p-1 custom-link rounded-4 me-2'><a href="{{ link.link }}"><i class="fa fa-{{ link.name }}"></i></a></li>
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" 
+            crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery-1.10.0.min.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        function toggleSearchBar() {
+            const searchBox = document.getElementById('search-box');
+            if (searchBox.classList.contains('d-none')) {
+                searchBox.classList.remove('d-none');
+            } else {
+                searchBox.classList.add('d-none');
+            }
+        }
+    </script>
+
+</body>
+</html>

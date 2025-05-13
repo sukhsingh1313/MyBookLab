@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+<div class="containter">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Contact Us</h1>
+            <div class="container">
+            </div>
+
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="row gy-4">
+
+                    <div class="col-md-6">
+                      <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                    </div>
+                    <div class="col-md-6 ">
+                        <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                      </div>
+                <div class="col-md-12">
+                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                </div>
+  
+            </div>
+            <button type="submit" class = " btn btn-success form-control">Submit your Query</button>
+              
+            </div>
+        </form>
+        {% if form.errors %}
+        <p style="color: red;">Please correct the errors below.</p>
+    {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

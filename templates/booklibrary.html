@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}MyBookLab{% endblock %}
+{% block content %}
+<style>
+    .product-item img {
+        width: 100%; 
+        height: 300px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+    figcaption h3 {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.2;
+        white-space: nowrap; /* Ensure text does not wrap */
+        overflow: hidden; /* Hide overflow text */
+        text-overflow: ellipsis; /* Show ellipsis (...) for truncated text */
+        margin-bottom: 10px; /* Added margin-bottom for spacing */
+        cursor: pointer; /* Pointer cursor to indicate interactivity */
+    }
+    
+    figcaption h3.full-view {
+        white-space: normal; /* Allow text to wrap */
+        overflow: visible; /* Show full text */
+        text-overflow: initial; /* Reset ellipsis */
+    }
+    
+</style>
+
+<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">Popular Books</h2>
+                </div>
+
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                    {% for category in categorie %}
+                    <li data-tab-target="#category-{{ category.id }}" class="tab">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+
+                <div class="tab-content">
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
+                            {% for category in categorie %}
+                            {% for book in category.book_library.all %}
+                            <div class="col-md-3">
+                                <div class="product-item rounded-2 " style='-webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.82); 
+box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.82);background-color: rgba(255,234,250,0.5);'>
+                                    <figure class="product-style">
+                                        <a href="{% url 'BookDetail_view' slug=book.slug %}">
+                                            <img src="{{ book.image.url }}" alt="Books" class="product-item img-fluid rounded">
+                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read More</button>
+                                        </a>
+                                    </figure>
+                                    <figcaption>
+                                        <h3 onclick="toggleFullView(this)">{{ book.title }}</h3>
+                                        <span>{{ book.author }}</span><br>
+                                        {% if book.is_free %}
+                                             <div class="item-price"><b class="text-success">Free</b></div>
+                                        {% else %}
+                                        <div class="item-price text-bg-dark"><b class="text-secondary">Price: ₹{{ book.price }}</b></div>
+                                               
+                                         {% endif %}
+                                    </figcaption>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% for category in categorie %}
+                    <div id="category-{{ category.id }}" data-tab-content>
+                        <div class="row">
+                            {% for book in category.book_library.all %}
+                            <div class="col-md-3">
+                                <div class="product-item">
+                                    <figure class="product-style">
+                                        <a href="{% url 'BookDetail_view' slug=book.slug %}">
+                                            <img src="{{ book.image.url }}" alt="Books" class="product-item img-fluid rounded">
+                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read More</button>
+                                        </a>
+                                    </figure>
+                                    <figcaption>
+                                        <h3 onclick="toggleFullView(this)">{{ book.title }}</h3>
+                                        <span>{{ book.author }}</span><br>
+                                        {% comment %} {% if book.is_free %}
+                                        <div class="item-price"><b class="text-success">Free</b></div>
+                                    {% else %}
+                                        <p class="text-danger">This book is paid. Price: ₹{{ book.price }}</p>
+                                    {% endif %} {% endcomment %}
+                                    {% if book.price > 0 %}
+                                        <p>This book is paid. Price: ₹{{ book.price }}</p>
+                                    {% else %}
+                                        <p>This book is Free</p>
+                                    {% endif %}
+                                    </figcaption>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div><!--inner-tabs-->
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('[data-tab-content]');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const target = document.querySelector(tab.dataset.tabTarget);
+
+                tabContents.forEach(tabContent => {
+                    tabContent.classList.remove('active');
+                });
+                tabs.forEach(tab => {
+                    tab.classList.remove('active');
+                });
+
+                tab.classList.add('active');
+                target.classList.add('active');
+            });
+        });
+    });
+
+    function toggleFullView(element) {
+        element.classList.toggle('full-view');
+    }
+</script>
+{% endblock %}
+

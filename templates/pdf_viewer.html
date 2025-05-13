@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}View PDF{% endblock %}
+
+{% block content %}
+<div id="viewerContainer" class="pdfViewer singlePageView">
+    <div id="pdfViewer" class="pdfViewer"></div>
+</div>
+
+<script src="{% static 'pdfjs/pdf.min.js' %}"></script>
+<script src="{% static 'pdfjs/pdf_viewer.js' %}"></script>
+<style>
+    #viewerContainer {
+        height: 100vh;
+        overflow: auto;
+    }
+    .toolbar {
+        display: none; /* Hide the toolbar */
+    }
+</style>
+<script>
+    var url = '{{ pdf_url }}';
+
+    var loadingTask = pdfjsLib.getDocument(url);
+    loadingTask.promise.then(function(pdf) {
+        var viewer = new pdfjsViewer.PDFViewer({
+            container: document.getElementById('viewerContainer'),
+        });
+        viewer.setDocument(pdf);
+    });
+</script>
+{% endblock %}

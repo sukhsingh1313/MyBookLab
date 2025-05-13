@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}OTP Verification{% endblock %}
+
+{% block content %}
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .form-container {
+    background-color: #f8f9fa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 350px;
+  }
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ECC94B; /* Warning color equivalent */
+  }
+  .form-control {
+    margin-bottom: 15px;
+  }
+  .btn-primary {
+    width: 100%;
+    background-color: #2D3748; /* Darker shade for the button */
+    border: none;
+  }
+  .btn-primary:hover {
+    background-color: #1A202C; /* Even darker shade for hover effect */
+  }
+</style>
+
+<div class="container">
+  <div class="form-container">
+    <h2>Verify OTP</h2>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <input type="text" class="form-control" name="otp" placeholder="Enter OTP" required>
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit"  class="btn btn-primary mb-2">Verify</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Book Details{% endblock %}
+
+{% block content %}
+<section id="book-detail-section" class="py-5">
+    <div class="container">
+        <div class="row">
+            {% if bookdetail %}
+            <div class="col-md-6">
+                <img src="{{ bookdetail.image.url }}" alt="{{ bookdetail.title }}" class="img-fluid">
+            </div>
+            <div class="col-md-6">
+                <h1 class="display-4">{{ bookdetail.title }}</h1>
+                <p class="lead">by <strong>{{ bookdetail.author }}</strong></p>
+                <p><strong>Publication Date:</strong> {{ bookdetail.publication_date }}</p>
+                <p><strong>Language:</strong> {{ bookdetail.book_language }}</p>
+                <p>
+                    <strong>Description:</strong><br>
+                    {{ bookdetail.decription_book }}
+                </p>
+                    <div>
+                        {% if bookdetail.is_free %}
+                        <a href="{% url 'view_book' bookdetail.slug 'pdf' %}"  target="_blank">
+                            <button class="btn btn-outline-warning rounded-2 p-1 m-1" >Read PDF</button>
+                        </a>
+                      
+                        {% else %}
+                        <p class="text-info"> Price: ₹{{ bookdetail.price }}</p>
+                                <form action="{% url 'purchase_book' bookdetail.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-warning rounded-2 p-1 m-1">Purchase Now</button>
+                                </form>
+                        {% endif %}
+                    
+                       
+                    </div>
+            {% else %}
+            <div class="col-12 text-center">
+                <h2>Book not found!</h2>
+                <p>Sorry, the book you're looking for is not available.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

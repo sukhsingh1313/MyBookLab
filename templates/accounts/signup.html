@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Signup Form{% endblock %}
+{% block content %}
+<style>
+  .container1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0 25px; /* Add padding to avoid touching the edges */
+  }
+  .form-container1 {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 350px; /* Adjust max-width */
+  }
+  .form-container1 h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ECC94B; /* Warning color equivalent */
+  }
+  .form-control {
+    margin-bottom: 10px; /* Reduced margin-bottom */
+  }
+  .btn-primary1 {
+    width: 100%;
+    background-color: #2D3748; /* Darker shade for the button */
+    border: none;
+  }
+  .btn-primary1:hover {
+    background-color: #1A202C; /* Even darker shade for hover effect */
+  }
+  .link-info {
+    color: #718096; /* Text secondary color */
+  }
+  .link-info:hover {
+    color: #4A5568; /* Darker text color on hover */
+  }
+</style>
+
+<div class="container1 mt-2">
+  <div class="form-container1">
+    <h1>Sign Up</h1>
+    <form method="post" class="row g-3 p-2"> <!-- Reduced padding -->
+      {% csrf_token %}
+      <div>
+        <label class="form-label" for="id_username">{{ form.username.label }}</label>
+        <input class="form-control" type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}">
+        {{ form.username.errors }}
+      </div>
+      <div>
+        <label class="form-label" for="id_email">{{ form.email.label }}</label>
+        <input type="email" class="form-control" name="email" id="id_email" value="{{ form.email.value|default:'' }}">
+        {{ form.email.errors }}
+      </div>
+      <div>
+        <label class="form-label" for="id_password1">{{ form.password1.label }}</label>
+        <input class="form-control" type="password" name="password1" id="id_password1">
+        {{ form.password1.errors }}
+      </div>
+      <div>
+        <label class="form-label" for="id_password2">{{ form.password2.label }}</label>
+        <input class="form-control" type="password" name="password2" id="id_password2">
+        {{ form.password2.errors }}
+      </div>
+      <div class="col-12 text-center">
+        <button type="submit" class="btn btn-primary mb-2 btn-primary1">Sign Up</button>
+        <p class="m-0"><a href="{% url 'login_view' %}" class="link-info link-offset-1-hover">I already have an account?</a></p>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
