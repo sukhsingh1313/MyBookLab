@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'BookLab_App',
     'accounts',
+     'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +137,23 @@ EMAIL_PORT = 587
 
 EMAIL_HOST_USER = 'sukhsingh15666@gmail.com'
 EMAIL_HOST_PASSWORD = 'vfge hevd sznu fjxm'
+
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('dtkngdlq4'),
+    'API_KEY': os.getenv('575855677421797'),
+    'API_SECRET': os.getenv('GDLX1XzZXDmegCDpiTrQ1UHytmo'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
