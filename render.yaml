@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: mybooklab
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn MyBooksLab.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: MyBooksLab.settings
+      - key: PYTHON_VERSION
+        value: 3.10
