@@ -1,0 +1,397 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Purchase {{ book.title }} - MyBookLab{% endblock %}
+
+{% block content %}
+<style>
+    :root {
+        --primary-color: #8a2be2;
+        --primary-light: #b491e6;
+        --primary-dark: #5e17a0;
+        --accent-color: #ffd700;
+        --text-dark: #1a1a1a;
+        --text-light: #6c757d;
+        --bg-light: #f9f5ff;
+        --card-bg: #ffffff;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+    
+    .purchase-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        box-shadow: var(--shadow);
+    }
+    
+    .purchase-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .purchase-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .purchase-container {
+        max-width: 1000px;
+        margin: 0 auto 4rem;
+        padding: 0 1rem;
+    }
+    
+    .book-summary {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .book-cover {
+        flex-shrink: 0;
+        width: 150px;
+        height: 200px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .book-cover img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .book-details {
+        flex-grow: 1;
+    }
+    
+    .book-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        font-size: 1.8rem;
+    }
+    
+    .book-author {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+    
+    .book-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
+    }
+    
+    .purchase-steps {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .step-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+    }
+    
+    .step-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border-radius: 50%;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+    }
+    
+    .step-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+        font-size: 1.4rem;
+    }
+    
+    .qr-code {
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+    
+    .qr-code img {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e6e6e6;
+    }
+    
+    .qr-instructions {
+        margin-top: 1rem;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .payment-form {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-label i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e6e6e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: var(--bg-light);
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        outline: none;
+    }
+    
+    .file-upload {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .file-upload-label {
+        display: block;
+        padding: 12px 15px;
+        border: 2px dashed #e6e6e6;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+        background: var(--bg-light);
+    }
+    
+    .file-upload-label:hover {
+        border-color: var(--primary-color);
+        background: rgba(138, 43, 226, 0.05);
+    }
+    
+    .file-upload-input {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 30px;
+        font-weight: 500;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+        margin-top: 1rem;
+        cursor: pointer;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    .btn-submit:active {
+        transform: translateY(-1px);
+    }
+    
+    .btn-submit i {
+        margin-left: 10px;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .step-card, .payment-form {
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .purchase-steps {
+            grid-template-columns: 1fr;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .purchase-title {
+            font-size: 2rem;
+        }
+        
+        .book-summary {
+            flex-direction: column;
+            text-align: center;
+        }
+        
+        .book-cover {
+            width: 120px;
+            height: 160px;
+        }
+        
+        .step-card, .payment-form {
+            padding: 1.5rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .book-summary, .step-card, .payment-form {
+            padding: 1.2rem;
+        }
+        
+        .book-title {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="purchase-hero">
+    <div class="container">
+        <h1 class="purchase-title">Complete Your Purchase</h1>
+        <p class="purchase-subtitle">Follow the steps below to get your book</p>
+    </div>
+</div>
+
+<div class="purchase-container">
+    <div class="book-summary">
+        <div class="book-cover">
+            <img src="{{ book.image.url }}" alt="{{ book.title }}">
+        </div>
+        <div class="book-details">
+            <h2 class="book-title">{{ book.title }}</h2>
+            <p class="book-author">by {{ book.author }}</p>
+            <div class="book-price">₹{{ book.price }}</div>
+        </div>
+    </div>
+
+    <div class="purchase-steps">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h3 class="step-title">Scan & Pay</h3>
+            <p>Scan the QR code below using your UPI app to complete the payment.</p>
+            
+            <div class="qr-code">
+                <img src="{% static 'images/myqrcode.jpg' %}" alt="QR Code">
+                <p class="qr-instructions">Open your banking app and scan this code</p>
+            </div>
+            
+            <div style="background-color: #f9f5ff; padding: 15px; border-radius: 8px; margin-top: 1rem; border-left: 4px solid var(--primary-color);">
+                <p style="margin: 0; font-size: 0.9rem; color: var(--primary-dark);">
+                    <strong>Note:</strong> Please save the transaction ID (UTR) after payment for verification.
+                </p>
+            </div>
+        </div>
+        
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h3 class="step-title">Verify Payment</h3>
+            <p>Upload proof of payment to complete your purchase.</p>
+            
+            <form method="post" enctype="multipart/form-data" class="payment-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label class="form-label" for="utr">
+                        <i class="fa fa-receipt"></i> UTR Number
+                    </label>
+                    <input type="text" name="utr_number" class="form-control" placeholder="Enter your transaction ID (UTR)" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="screenshot">
+                        <i class="fa fa-image"></i> Payment Screenshot
+                    </label>
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="screenshot">
+                            <i class="fa fa-cloud-upload"></i> Click to upload screenshot
+                        </label>
+                        <input type="file" name="screenshot" class="file-upload-input" id="screenshot" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Submit Verification <i class="fa fa-check-circle"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Update file upload label with selected file name
+        const fileInput = document.getElementById('screenshot');
+        const fileLabel = document.querySelector('.file-upload-label');
+        
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                fileLabel.innerHTML = '<i class="fa fa-file-image-o"></i> ' + this.files[0].name;
+            }
+        });
+    });
+</script>

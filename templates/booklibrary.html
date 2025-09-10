@@ -1,124 +1,385 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}MyBookLab{% endblock %}
+{% block title %}MyBookLab - Discover Books{% endblock %}
+
 {% block content %}
 <style>
-    .product-item img {
-        width: 100%; 
+    :root {
+        --primary-color: #8a2be2;
+        --primary-light: #b491e6;
+        --primary-dark: #5e17a0;
+        --accent-color: #ffd700;
+        --text-dark: #1a1a1a;
+        --text-light: #6c757d;
+        --bg-light: #f9f5ff;
+        --card-bg: #ffffff;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+    
+    .gallery-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        box-shadow: var(--shadow);
+    }
+    
+    .gallery-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 2.8rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .gallery-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .tabs-container {
+        background: var(--card-bg);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: var(--shadow);
+        margin-bottom: 2rem;
+    }
+    
+    .tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 2rem;
+        padding: 0;
+        list-style: none;
+    }
+    
+    .tab {
+        padding: 12px 25px;
+        background: var(--bg-light);
+        border-radius: 30px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        border: 2px solid transparent;
+    }
+    
+    .tab:hover {
+        background: var(--primary-light);
+        color: white;
+    }
+    
+    .tab.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-dark);
+    }
+    
+    .tab-content {
+        display: none;
+    }
+    
+    .tab-content.active {
+        display: block;
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 25px;
+    }
+    
+    .book-card {
+        background: var(--card-bg);
+        border-radius: 15px;
+        overflow: hidden;
+        transition: var(--transition);
+        box-shadow: var(--shadow);
+        position: relative;
+    }
+    
+    .book-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+    
+    .book-image-container {
+        position: relative;
+        overflow: hidden;
         height: 300px;
+    }
+    
+    .book-image {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
-        border-radius: 5px;
-    }
-    figcaption h3 {
-        font-size: 16px;
-        font-weight: bold;
-        line-height: 1.2;
-        white-space: nowrap; /* Ensure text does not wrap */
-        overflow: hidden; /* Hide overflow text */
-        text-overflow: ellipsis; /* Show ellipsis (...) for truncated text */
-        margin-bottom: 10px; /* Added margin-bottom for spacing */
-        cursor: pointer; /* Pointer cursor to indicate interactivity */
+        transition: var(--transition);
     }
     
-    figcaption h3.full-view {
-        white-space: normal; /* Allow text to wrap */
-        overflow: visible; /* Show full text */
-        text-overflow: initial; /* Reset ellipsis */
+    .book-card:hover .book-image {
+        transform: scale(1.05);
     }
     
+    .book-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: var(--transition);
+    }
+    
+    .book-card:hover .book-overlay {
+        opacity: 1;
+    }
+    
+    .read-more-btn {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 12px 25px;
+        font-weight: 500;
+        transition: var(--transition);
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .read-more-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+    }
+    
+    .read-more-btn i {
+        margin-left: 8px;
+    }
+    
+    .book-info {
+        padding: 1.5rem;
+    }
+    
+    .book-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+        cursor: pointer;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 56px;
+        transition: var(--transition);
+    }
+    
+    .book-title:hover {
+        color: var(--primary-color);
+    }
+    
+    .book-title.expanded {
+        -webkit-line-clamp: unset;
+        height: auto;
+    }
+    
+    .book-author {
+        color: var(--text-light);
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .book-price {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 15px;
+        border-radius: 20px;
+        font-weight: 600;
+    }
+    
+    .price-free {
+        background: rgba(40, 167, 69, 0.15);
+        color: #28a745;
+    }
+    
+    .price-paid {
+        background: rgba(108, 117, 125, 0.15);
+        color: var(--text-light);
+    }
+    
+    .empty-category {
+        text-align: center;
+        padding: 3rem;
+        grid-column: 1 / -1;
+    }
+    
+    .empty-icon {
+        font-size: 3rem;
+        color: var(--primary-light);
+        margin-bottom: 1.5rem;
+    }
+    
+    .empty-text {
+        color: var(--text-light);
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .book-card {
+        animation: fadeIn 0.5s ease-out;
+        animation-fill-mode: both;
+    }
+    
+    .book-card:nth-child(1) { animation-delay: 0.1s; }
+    .book-card:nth-child(2) { animation-delay: 0.2s; }
+    .book-card:nth-child(3) { animation-delay: 0.3s; }
+    .book-card:nth-child(4) { animation-delay: 0.4s; }
+    .book-card:nth-child(5) { animation-delay: 0.5s; }
+    .book-card:nth-child(6) { animation-delay: 0.6s; }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .gallery-title {
+            font-size: 2.2rem;
+        }
+        
+        .gallery-subtitle {
+            font-size: 1rem;
+        }
+        
+        .tabs {
+            justify-content: center;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+        
+        .books-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .books-grid {
+            grid-template-columns: 1fr;
+            max-width: 350px;
+            margin: 0 auto;
+        }
+        
+        .tabs-container {
+            padding: 1.5rem;
+        }
+    }
 </style>
 
-<section id="popular-books" class="bookshelf py-5 my-5">
+<div class="gallery-hero">
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="section-header align-center">
-                    <div class="title">
-                        <span>Some quality items</span>
-                    </div>
-                    <h2 class="section-title">Popular Books</h2>
-                </div>
-
-                <ul class="tabs">
-                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
-                    {% for category in categorie %}
-                    <li data-tab-target="#category-{{ category.id }}" class="tab">{{ category.name }}</li>
-                    {% endfor %}
-                </ul>
-
-                <div class="tab-content">
-                    <div id="all-genre" data-tab-content class="active">
-                        <div class="row">
-                            {% for category in categorie %}
-                            {% for book in category.book_library.all %}
-                            <div class="col-md-3">
-                                <div class="product-item rounded-2 " style='-webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.82); 
-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.82);background-color: rgba(255,234,250,0.5);'>
-                                    <figure class="product-style">
-                                        <a href="{% url 'BookDetail_view' slug=book.slug %}">
-                                            <img src="{{ book.image.url }}" alt="Books" class="product-item img-fluid rounded">
-                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read More</button>
-                                        </a>
-                                    </figure>
-                                    <figcaption>
-                                        <h3 onclick="toggleFullView(this)">{{ book.title }}</h3>
-                                        <span>{{ book.author }}</span><br>
-                                        {% if book.is_free %}
-                                             <div class="item-price"><b class="text-success">Free</b></div>
-                                        {% else %}
-                                        <div class="item-price text-bg-dark"><b class="text-secondary">Price: ₹{{ book.price }}</b></div>
-                                               
-                                         {% endif %}
-                                    </figcaption>
-                                </div>
-                            </div>
-                            {% endfor %}
-                            {% endfor %}
-                        </div>
-                    </div>
-
-                    {% for category in categorie %}
-                    <div id="category-{{ category.id }}" data-tab-content>
-                        <div class="row">
-                            {% for book in category.book_library.all %}
-                            <div class="col-md-3">
-                                <div class="product-item">
-                                    <figure class="product-style">
-                                        <a href="{% url 'BookDetail_view' slug=book.slug %}">
-                                            <img src="{{ book.image.url }}" alt="Books" class="product-item img-fluid rounded">
-                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart">Read More</button>
-                                        </a>
-                                    </figure>
-                                    <figcaption>
-                                        <h3 onclick="toggleFullView(this)">{{ book.title }}</h3>
-                                        <span>{{ book.author }}</span><br>
-                                        {% comment %} {% if book.is_free %}
-                                        <div class="item-price"><b class="text-success">Free</b></div>
-                                    {% else %}
-                                        <p class="text-danger">This book is paid. Price: ₹{{ book.price }}</p>
-                                    {% endif %} {% endcomment %}
-                                    {% if book.price > 0 %}
-                                        <p>This book is paid. Price: ₹{{ book.price }}</p>
-                                    {% else %}
-                                        <p>This book is Free</p>
-                                    {% endif %}
-                                    </figcaption>
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </div><!--inner-tabs-->
-        </div>
+        <h1 class="gallery-title">Discover Our Collection</h1>
+        <p class="gallery-subtitle">Explore our curated selection of books across various genres and find your next great read</p>
     </div>
-</section>
+</div>
+
+<div class="container mb-5">
+    <div class="tabs-container">
+        <ul class="tabs">
+            <li data-tab-target="#all-genre" class="tab active">All Genres</li>
+            {% for category in categorie %}
+            <li data-tab-target="#category-{{ category.id }}" class="tab">{{ category.name }}</li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content active" id="all-genre">
+            <div class="books-grid">
+                {% for category in categorie %}
+                    {% for book in category.book_library.all %}
+                    <div class="book-card">
+                        <div class="book-image-container">
+                            <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
+                            <div class="book-overlay">
+                                <a href="{% url 'BookDetail_view' slug=book.slug %}" class="read-more-btn">
+                                    Read More <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3 class="book-title" onclick="toggleTitle(this)">{{ book.title }}</h3>
+                            <p class="book-author">by {{ book.author }}</p>
+                            {% if book.is_free %}
+                                <span class="book-price price-free">Free</span>
+                            {% else %}
+                                <span class="book-price price-paid">₹{{ book.price }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+        {% for category in categorie %}
+        <div class="tab-content" id="category-{{ category.id }}">
+            <div class="books-grid">
+                {% for book in category.book_library.all %}
+                <div class="book-card">
+                    <div class="book-image-container">
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}" class="book-image">
+                        <div class="book-overlay">
+                            <a href="{% url 'BookDetail_view' slug=book.slug %}" class="read-more-btn">
+                                Read More <i class="fa fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="book-info">
+                        <h3 class="book-title" onclick="toggleTitle(this)">{{ book.title }}</h3>
+                        <p class="book-author">by {{ book.author }}</p>
+                        {% if book.is_free %}
+                            <span class="book-price price-free">Free</span>
+                        {% else %}
+                            <span class="book-price price-paid">₹{{ book.price }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-category">
+                    <div class="empty-icon">
+                        <i class="fa fa-book"></i>
+                    </div>
+                    <p class="empty-text">No books available in this category yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const tabs = document.querySelectorAll('.tab');
-        const tabContents = document.querySelectorAll('[data-tab-content]');
+        const tabContents = document.querySelectorAll('.tab-content');
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -137,9 +398,8 @@ box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.82);background-color: rgba(255,234,250
         });
     });
 
-    function toggleFullView(element) {
-        element.classList.toggle('full-view');
+    function toggleTitle(element) {
+        element.classList.toggle('expanded');
     }
 </script>
 {% endblock %}
-

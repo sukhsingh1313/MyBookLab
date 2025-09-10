@@ -15,6 +15,7 @@ urlpatterns = [
     path('search/', views.search_books_view, name='search'),
     path('books/',views.all_books_view, name='book_list'),
     path('contect/',views.contect_view, name='contect_view'),
+    
 
 
     #account section urls

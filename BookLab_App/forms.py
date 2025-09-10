@@ -3,7 +3,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.forms import PasswordResetForm
 from .models import Contact
+from .models import PaymentProof
 
+class PaymentProofForm(forms.ModelForm):
+    class Meta:
+        model = PaymentProof
+        fields = ['utr_number', 'screenshot']
+
+         
 class contectForm(forms.ModelForm):
     class Meta:
         model = Contact

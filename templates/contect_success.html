@@ -1,19 +1,199 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}contect{% endblock %}
+{% block title %}Message Sent Successfully{% endblock %}
 
 {% block content %}
-<div class="containter">
-    <section >
-<hr>
-        <div class="container">
-            <h1>Your message has been sent. Thank you!</h1><br>
-            <a href="/contect/" class="go-back">Go back</a>
-        </div>
+<style>
+    :root {
+        --primary-color: #8a2be2;
+        --primary-light: #b491e6;
+        --primary-dark: #5e17a0;
+        --accent-color: #ffd700;
+        --text-dark: #1a1a1a;
+        --text-light: #6c757d;
+        --bg-light: #f9f5ff;
+        --card-bg: #ffffff;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+    
+    .success-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        box-shadow: var(--shadow);
+    }
+    
+    .success-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 1rem;
+    }
+    
+    .success-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 3rem;
+        text-align: center;
+        box-shadow: var(--shadow);
+        margin-bottom: 3rem;
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .success-icon {
+        font-size: 5rem;
+        color: #28a745;
+        margin-bottom: 1.5rem;
+        animation: bounce 1s ease;
+    }
+    
+    .success-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        color: var(--text-dark);
+        margin-bottom: 1rem;
+        font-size: 2.2rem;
+    }
+    
+    .success-message {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        margin-bottom: 2.5rem;
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+    .success-actions {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .btn-primary-custom {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 25px;
+        font-weight: 500;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+    }
+    
+    .btn-primary-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+        color: white;
+    }
+    
+    .btn-primary-custom i {
+        margin-right: 8px;
+    }
+    
+    .btn-outline-custom {
+        background: transparent;
+        color: var(--primary-color);
+        border: 2px solid var(--primary-color);
+        border-radius: 8px;
+        padding: 10px 23px;
+        font-weight: 500;
+        transition: var(--transition);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+    
+    .btn-outline-custom:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(138, 43, 226, 0.2);
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-20px);
+        }
+        60% {
+            transform: translateY(-10px);
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .success-card {
+            padding: 2rem;
+        }
+        
+        .success-title {
+            font-size: 1.8rem;
+        }
+        
+        .success-message {
+            font-size: 1rem;
+        }
+        
+        .success-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn-primary-custom, .btn-outline-custom {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
 
-    </section><!-- /Contact Section -->
-
+<div class="success-hero">
+    <div class="container">
+        <h1>Message Sent Successfully</h1>
+        <p>Thank you for reaching out to us</p>
+    </div>
 </div>
 
-
+<div class="success-container">
+    <div class="success-card">
+        <div class="success-icon">
+            <i class="fa fa-check-circle"></i>
+        </div>
+        <h2 class="success-title">Thank You for Your Message!</h2>
+        <p class="success-message">
+            We've received your message and will get back to you as soon as possible. 
+            Our team typically responds within 24-48 hours.
+        </p>
+        <div class="success-actions">
+            <a href="/" class="btn-primary-custom">
+                <i class="fa fa-home"></i> Return to Home
+            </a>
+            <a href="/contect/" class="btn-outline-custom">
+                <i class="fa fa-envelope"></i> Send Another Message
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

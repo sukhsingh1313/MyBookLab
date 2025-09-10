@@ -19,121 +19,315 @@
 
     <!-- Font Awesome -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/vendor.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
     <link rel="stylesheet" href="{% static 'icomoon/icomoon.css' %}">
+    
     <style>
-        /* Existing styles */
-        .rounded-logo {
-            border-radius: 50%;
-            width: 100px;
+        :root {
+            --primary-color: #8a2be2;
+            --primary-light: #b491e6;
+            --primary-dark: #5e17a0;
+            --secondary-color: #ffd700;
+            --text-dark: #1a1a1a;
+            --text-light: #f8f9fa;
+            --bg-light: #f9f5ff;
+            --card-bg: #ffffff;
+            --transition: all 0.3s ease;
         }
         
-        .search-bar {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e6e6fa 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: flex-end;
+            flex-direction: column;
         }
         
-        .search-box {
-            position: absolute;
-            top: 50px;
-            right: 0;
-            width: 200px;
-            z-index: 10;
+        /* Header Styles */
+        .top-content {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            padding: 8px 0;
+            color: white;
         }
         
-        .search-box input {
-            width: 100%;
-            padding: 5px;
-        }
-        
-        .body-custom {
-            background-color: rgb(164, 75, 253);
-            color: rgb(7, 3, 15);
-        }
-        
-        .custom-header {
-            background-color: rgb(164, 75, 253);
-        }
-        
-        .navbar {
-            color: black;
-        }
-       
-        
-        /* Media Query for screens 650px or less */
-        @media (max-width: 675px) {
-            .main-logo {
-                text-align: center;
-                width: 100%; /* Make logo container full width */
-            }
-            .col-md-2 {
-                order: 1; /* Ensure logo is at the top */
-            }
-            .col-md-10 {
-                order: 2; /* Ensure navbar is below the logo */
-            }
-            .navbar {
-                justify-content: center;
-            }
-        }
-        
-        .nav-link{
-            color: rgb(61, 31, 4);
-        }
-        .nav-link:hover {
-            color: rgb(0,0,0); /* Hover text color */
-            
-          }
-          .custom-link{
-            background-color:  rgb(222, 218, 215);
-           
-          }
-          .social-links ul {
+        .social-links ul {
+            display: flex;
             list-style: none;
             padding: 0;
             margin: 0;
         }
-    
+        
         .social-links ul li {
-            display: inline-block; /* Horizontal alignment */
+            margin-right: 10px;
         }
-    
+        
         .social-links ul li a {
-            color: gray;
-            text-decoration: none;
-            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: var(--transition);
         }
-    
+        
         .social-links ul li a:hover {
-            color: #ff5733; /* Hover effect color */
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
         }
-        .navbar-nav-custom li a{
-            font-size: 15px;
+        
+        .right-element {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
         }
-        .navbar-nav-custom li a:hover{
-            color:rgb(0, 143, 112);
-            font-size: 17px;
+        
+        .search-button {
+            color: white;
+            font-size: 1.2rem;
+            transition: var(--transition);
         }
-    
+        
+        .search-button:hover {
+            color: var(--secondary-color);
+        }
+        
+        /* Main Header/Navbar */
+        #header {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .main-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .rounded-logo {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: var(--transition);
+        }
+        
+        .rounded-logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            border-radius: 12px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--primary-dark) !important;
+            font-size: 1.5rem;
+        }
+        
+        .navbar-nav-custom .nav-link {
+            color: var(--text-dark);
+            font-weight: 500;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 8px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .navbar-nav-custom .nav-link:not(.link-primary):not(.link-info):not(.link-danger):hover {
+            color: var(--primary-color);
+            background: rgba(138, 43, 226, 0.1);
+        }
+        
+        .navbar-nav-custom .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .navbar-nav-custom .nav-link:hover::after {
+            width: 70%;
+            left: 15%;
+        }
+        
+        .navbar-nav-custom .nav-link.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .navbar-nav-custom .nav-link.active::after {
+            width: 70%;
+            left: 15%;
+        }
+        
+        /* Auth buttons styling */
+        .link-primary {
+            color: #0d6efd !important;
+            font-weight: 600;
+        }
+        
+        .link-info {
+            color: #0dcaf0 !important;
+            font-weight: 600;
+        }
+        
+        .link-danger {
+            color: #dc3545 !important;
+            font-weight: 600;
+        }
+        
+        /* Content Area */
+        .main-content {
+            flex: 1;
+            padding: 30px 0;
+        }
+        
+        /* Footer Styles */
+        #footer {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+        
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+        
+        #footer p {
+            max-width: 600px;
+            margin: 0 auto 20px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        #footer-bottom {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        #footer-bottom a {
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        #footer-bottom a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .navbar-nav-custom {
+                text-align: center;
+                padding: 10px 0;
+            }
+            
+            .navbar-nav-custom .nav-link {
+                margin: 5px 0;
+            }
+            
+            .social-links ul {
+                justify-content: center;
+            }
+            
+            .right-element {
+                justify-content: center;
+                margin-top: 10px;
+            }
+            
+            #footer-bottom .row > div {
+                text-align: center !important;
+                margin-bottom: 15px;
+            }
+            
+            #footer-bottom .social-links {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .rounded-logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .navbar-brand {
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* Animation for subtle effects */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .main-logo, .navbar, .top-content {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        /* Custom button styles */
+        .btn-custom {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            transition: var(--transition);
+        }
+        
+        .btn-custom:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
     </style>
 </head>
 
-<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0" class = "body-custom">
-    
-
-    <div id="header-wrap" class="custom-header">
+<body data-bs-spy="scroll" data-bs-target="#header" tabindex="0">
+    <div id="header-wrap">
         <div class="top-content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="social-links">
-                            <ul class="d-flex align-items-center justify-content-start ">
+                            <ul class="d-flex align-items-center">
                                 {% for link in social_link %}
-                                <li class="p-1  custom-link rounded-4 me-1">
+                                <li>
                                     <a href="{{ link.link }}" target="_blank">
                                         <i class="fa fa-{{ link.name|lower }}"></i>
                                     </a>
@@ -146,13 +340,9 @@
                         <div class="right-element">
                             <div class="action-menu">
                                 <div class="search-bar">
-                                    <a href="{% url 'search' %}" class="search-button search-toggle" onclick="toggleSearchBar()">
+                                    <a href="{% url 'search' %}" class="search-button">
                                         <i class="icon icon-search"></i>
                                     </a>
-                                    {% comment %} <form role="search" method="get" action="{% url 'search' %}" class="search-box">
-                                        <input class="search-field text search-input" name="query" placeholder="Search" type="search">
-                                        <button type="submit" class="btn btn-primary d-none">Search</button>
-                                    </form> {% endcomment %}
                                 </div>
                             </div>
                         </div>
@@ -162,108 +352,101 @@
         </div>
     </div>
     
-    
-    
-
-        <header id="header" class=""  style="background-color:rgb(164, 75, 253);">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="main-logo  w-100 mb-2">
-                            {% if bar_name_changes.logo %}
-                                <img src="{{ bar_name_changes.logo.url }}" alt="logo" class="rounded-logo">
+    <header id="header">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-2 col-md-12">
+                    <div class="main-logo text-center text-lg-start mb-3 mb-lg-0">
+                        {% if bar_name_changes.logo %}
+                            <img src="{{ bar_name_changes.logo.url }}" alt="logo" class="rounded-logo">
+                        {% else %}
+                            <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="rounded-logo">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-10 col-md-12">
+                    <nav class="navbar navbar-expand-lg navbar-light rounded-3">
+                        <div class="container-fluid">
+                            {% if bar_name_changes.menu_name %}
+                                <a class="navbar-brand" href="/">{{bar_name_changes.menu_name}}</a>
                             {% else %}
-                                <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="rounded-logo" style="">
+                                <a class="navbar-brand" href="/">MyBookLab</a>
                             {% endif %}
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+                                    aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav ms-auto navbar-nav-custom">
+                                    <li class="nav-item">
+                                        <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="/">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {% if request.resolver_match.url_name == 'contect_view' %}active{% endif %}" href="{% url 'contect_view' %}">Contact</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {% if request.resolver_match.url_name == 'book_list' %}active{% endif %}" href="{% url 'book_list' %}">Book List</a>
+                                    </li>
+                                    
+                                    
+                                    {% if request.user.is_authenticated %}
+                                    <li class="nav-item">
+                                        <a class="nav-link link-danger" href="{% url 'logout_view' %}">Logout</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="nav-item">
+                                        <a class="nav-link link-info" href="{% url 'signup_view' %}">Signup</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link-primary" href="{% url 'login_view' %}">Login</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-10">
-                        <nav id="navbar" class="navbar navbar-expand-lg navbar-light  rounded-5 m-1" style="background-color:rgb(234, 220, 250); color:black; ">
-                            <div class="container-fluid">
-                                {% if bar_name_changes.menu_name %}
-                                    <a class="navbar-brand" href="/">{{bar_name_changes.menu_name}}</a>
-                                {% else %}
-                                    <a class="navbar-brand " href="/">MyBazaar</a>
-                                {% endif %}
-                                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
-                                        aria-label="Toggle navigation">
-                                    <span class="navbar-toggler-icon"></span>
-                                </button>
-                                <div class="collapse navbar-collapse" id="navbarNav">
-                                    <ul class="navbar-nav ms-auto navbar-nav-custom">
-                                        <li class="nav-item"><a class="nav-link active"  href="/">Home</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{% url "contect_view" %}">Contact</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{% url "book_list" %}">Book List</a></li>
-                                        
-        {% if request.user.is_authenticated %}
-        <!-- Logout option for logged-in users -->
-        <li class="nav-item">
-            <a class="nav-link link-danger" href="{% url 'logout_view' %}">Logout</a>
-        </li>
-    {% else %}
-        <!-- Signup and Login options for guests -->
-        <li class="nav-item">
-            <a class="nav-link link-info" href="{% url 'signup_view' %}">Signup</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link link-primary fw-bold" href="{% url 'login_view' %}">Login</a>
-        </li>
-    {% endif %}
-                                    </ul>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
+                    </nav>
                 </div>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
 
-    {% block content %}{% endblock %}
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
 
-    <footer id="footer" class="d-flex justify-content-center align-items-center text-center py-4">
-        
+    <footer id="footer">
+        <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-15">
-                   
-                       
-                            {% if bar_name_changes.logo %}
-                                <img src="{{ bar_name_changes.logo }}" alt="logo" class="rounded-logo mb-3">
-                            {% else %}
-                                <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="footer-logo rounded-logo mb-3">
-                            {% endif %}
-                            <div class='d-flex justify-content-center'>
-                                <p>What is the point of being a developer if I can't make a difference?</p>
-                            </div>
-                        
-                      
-                   
+                <div class="col-md-8 text-center">
+                    {% if bar_name_changes.logo %}
+                        <img src="{{ bar_name_changes.logo.url }}" alt="logo" class="rounded-logo mb-3">
+                    {% else %}
+                        <img src="{% static 'images/MyBookLab.png' %}" alt="logo" class="footer-logo rounded-logo mb-3">
+                    {% endif %}
+                    <p class="mb-4">What is the point of being a developer if I can't make a difference?</p>
                 </div>
             </div>
-      
+        </div>
     </footer>
     
-
     <div id="footer-bottom">
         <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <div class="row">
-                            <div class="col-md-8 ">
-                                <p>© 2025 All rights reserved. Developed by <a href="https:///codexsukh.onrender.com" target="_blank" class='link-secondary'>Sukhchain singh 👈</a><small>click and see portfolio</small></p>
-                            </div>
-                            <div class="col-md-4">
-                                {% for link in social_link %}
-                                    <div class="social-links align-right">
-                                        <ul>
-                                            <li class='p-1 custom-link rounded-4 me-2'><a href="{{ link.link }}"><i class="fa fa-{{ link.name }}"></i></a></li>
-                                        </ul>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <p class="mb-0">© 2025 All rights reserved. Developed by <a href="https://codexsukh.onrender.com" target="_blank">Sukhchain Singh</a> 👈 <small>click and see portfolio</small></p>
+                </div>
+                <div class="col-md-4">
+                    <div class="social-links d-flex justify-content-md-end justify-content-center">
+                        <ul class="d-flex">
+                            {% for link in social_link %}
+                            <li class="ms-2">
+                                <a href="{{ link.link }}" target="_blank">
+                                    <i class="fa fa-{{ link.name|lower }}"></i>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -277,16 +460,5 @@
     <script src="{% static 'js/jquery-1.10.0.min.js' %}"></script>
     <script src="{% static 'js/plugins.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
-    <script>
-        function toggleSearchBar() {
-            const searchBox = document.getElementById('search-box');
-            if (searchBox.classList.contains('d-none')) {
-                searchBox.classList.remove('d-none');
-            } else {
-                searchBox.classList.add('d-none');
-            }
-        }
-    </script>
-
 </body>
 </html>

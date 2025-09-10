@@ -1,6 +1,11 @@
 from django.contrib import admin
-from .models import BooksLibrary, social_links, topbar_changes, Categories,Contact
+from .models import BooksLibrary, social_links, topbar_changes, Categories,Contact, PaymentProof
 
+@admin.register(PaymentProof)
+class PaymentProofAdmin(admin.ModelAdmin):
+    list_display = ("user", "book", "utr_number", "verified", "created_at")
+    list_filter = ("verified", "created_at")
+    search_fields = ("user__username", "utr_number")
 # Register your models here.
 admin.site.register(Categories)
 

@@ -1,40 +1,254 @@
 {% extends "base.html" %}
 {% load static %}
-{% block title %}Contact{% endblock %}
+{% block title %}Contact Us - MyBookLab{% endblock %}
 
 {% block content %}
-<div class="containter">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Contact Us</h1>
-            <div class="container">
-            </div>
+<style>
+    :root {
+        --primary-color: #8a2be2;
+        --primary-light: #b491e6;
+        --primary-dark: #5e17a0;
+        --accent-color: #ffd700;
+        --text-dark: #1a1a1a;
+        --text-light: #6c757d;
+        --bg-light: #f9f5ff;
+        --card-bg: #ffffff;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+    
+    .contact-hero {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        padding: 3rem 0;
+        margin-bottom: 3rem;
+        text-align: center;
+        border-radius: 0 0 20px 20px;
+        box-shadow: var(--shadow);
+    }
+    
+    .contact-title {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .contact-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .contact-container {
+        max-width: 800px;
+        margin: 0 auto 4rem;
+        padding: 0 1rem;
+    }
+    
+    .contact-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: 2.5rem;
+        box-shadow: var(--shadow);
+        animation: fadeIn 0.8s ease-out;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-label i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e6e6e6;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: var(--transition);
+        background: var(--bg-light);
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.1);
+        outline: none;
+    }
+    
+    textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 30px;
+        font-weight: 500;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        font-size: 1.1rem;
+        box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+        margin-top: 1rem;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+    }
+    
+    .btn-submit:active {
+        transform: translateY(-1px);
+    }
+    
+    .btn-submit i {
+        margin-left: 10px;
+    }
+    
+    .error-message {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .error-message i {
+        margin-right: 5px;
+    }
+    
+    .form-errors {
+        background: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
+        padding: 1rem;
+        border-radius: 4px;
+        margin-bottom: 1.5rem;
+        color: #dc3545;
+    }
+    
+    .form-errors p {
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-errors i {
+        margin-right: 10px;
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .contact-title {
+            font-size: 2rem;
+        }
+        
+        .contact-card {
+            padding: 2rem;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .contact-card {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+    }
+</style>
 
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="row gy-4">
-
-                    <div class="col-md-6">
-                      <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                    </div>
-                    <div class="col-md-6 ">
-                        <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                      </div>
-                <div class="col-md-12">
-                    <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
-  
-            </div>
-            <button type="submit" class = " btn btn-success form-control">Submit your Query</button>
-              
-            </div>
-        </form>
-        {% if form.errors %}
-        <p style="color: red;">Please correct the errors below.</p>
-    {% endif %}
-        </div>
+<div class="contact-hero">
+    <div class="container">
+        <h1 class="contact-title">Get In Touch</h1>
+        <p class="contact-subtitle">We'd love to hear from you. Send us a message and we'll respond as soon as possible.</p>
     </div>
 </div>
 
-
+<div class="contact-container">
+    <div class="contact-card">
+        {% if form.errors %}
+        <div class="form-errors">
+            <p><i class="fa fa-exclamation-circle"></i> Please correct the errors below.</p>
+        </div>
+        {% endif %}
+        
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="row gy-4">
+                <div class="col-md-6">
+                    <label class="form-label" for="name">
+                        <i class="fa fa-user"></i> Your Name
+                    </label>
+                    <input type="text" name="name" class="form-control" placeholder="Enter your full name" required>
+                    {% if form.errors.name %}
+                    <div class="error-message">
+                        <i class="fa fa-exclamation-circle"></i> {{ form.errors.name.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-md-6">
+                    <label class="form-label" for="email">
+                        <i class="fa fa-envelope"></i> Your Email
+                    </label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter your email address" required>
+                    {% if form.errors.email %}
+                    <div class="error-message">
+                        <i class="fa fa-exclamation-circle"></i> {{ form.errors.email.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="col-12">
+                    <label class="form-label" for="message">
+                        <i class="fa fa-comment"></i> Message
+                    </label>
+                    <textarea class="form-control" name="message" rows="6" placeholder="How can we help you?" required></textarea>
+                    {% if form.errors.message %}
+                    <div class="error-message">
+                        <i class="fa fa-exclamation-circle"></i> {{ form.errors.message.0 }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <button type="submit" class="btn-submit">
+                Send Message <i class="fa fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
+</div>
 {% endblock %}
